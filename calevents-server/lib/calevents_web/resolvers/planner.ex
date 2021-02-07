@@ -47,7 +47,7 @@ defmodule CaleventsWeb.Resolvers.Planner do
   # Check if the time/date range is possible with the already saved events.
   # In case of an update we pass the event_id to skip that item.
   #
-  defp planning_possible(start_date, end_date, user_id, event_id \\ -1) do
+  defp planning_possible(start_date, end_date, user_id, event_id \\ "-1") do
     # first check if any element is null date is correct
     if start_date == nil or end_date == nil or user_id == nil do
       true
@@ -73,11 +73,9 @@ defmodule CaleventsWeb.Resolvers.Planner do
             cond do
               # in the case of an update we skip this event
               String.to_integer(event_id) == event.id ->
-                IO.puts("ok")
                 true
 
               true ->
-                IO.puts("ah bon")
                 # Impossible conditions
                 condition1 =
                   compare_date(start_date, :>=, event.start) and
