@@ -2,11 +2,17 @@ import Component from '@glimmer/component';
 import { action } from '@ember/object';
 import { tracked } from '@glimmer/tracking';
 import { inject as service } from '@ember/service';
+import { htmlSafe } from '@ember/template';
 
 export default class CalendarComponent extends Component {
   @tracked isShowingModal = false;
   @tracked infos = '';
   @tracked error = '';
+
+  @tracked text = '';
+  @tracked startDate = '';
+  @tracked endDate = '';
+  currentEvent;
 
   @service
   planner;
@@ -72,6 +78,11 @@ export default class CalendarComponent extends Component {
       });
     };
 
+    // Click Event
+    this.dp.onEventClicked = (args) => {
+      this.showEventInfo(args.e.data);
+    };
+
     // when event duration is changed
     this.dp.onEventResized = (args) => {
       this.checkClick(args, async (eventResized) => {
@@ -94,8 +105,10 @@ export default class CalendarComponent extends Component {
 
     // delete event
     this.dp.eventDeleteHandling = 'Update';
-    this.dp.onEventDeleted = (args) => {
-      const response = this.apolloService.deleteEvent({ id: args.e.id() });
+    this.dp.onEventDeleted = async (args) => {
+      const response = await this.apolloService.deleteEvent({
+        id: args.e.id(),
+      });
       if (response.status === 'error') {
         this.error = response.message;
       } else {
@@ -121,7 +134,7 @@ export default class CalendarComponent extends Component {
    * Create a new event in the calendar
    * @param {*} args
    */
-  createEvent(args) {
+  async createEvent(args) {
     const title = prompt('New event name:', 'Event');
     const description = prompt('New event description:', 'Description');
     if (!name && !description) {
@@ -137,7 +150,7 @@ export default class CalendarComponent extends Component {
         start: new Date(args.start),
         end: new Date(args.end),
       };
-      const response = this.apolloService.createEvent(variables);
+      const response = await this.apolloService.createEvent(variables);
       if (response.status === 'error') {
         this.error = response.message;
       } else {
@@ -145,7 +158,6 @@ export default class CalendarComponent extends Component {
         this.dp.events.list.pushObject(
           this.planner.setNewEvent(response.id, variables)
         );
-        console.log(this.dp.events.list);
         this.dp.update(); // refresh the calendar
       }
     }
@@ -158,8 +170,11 @@ export default class CalendarComponent extends Component {
    */
   checkClick(args, fn) {
     const eventResized = this.planner.getEvent(args.e.data.id);
-    if (args.e.start === args.newStart && args.e.end === args.newEnd) {
-      this.showEventInfo(args.e.data.id);
+    if (
+      args.e.part.start === args.newStart &&
+      args.e.part.end === args.newEnd
+    ) {
+      this.showEventInfo(args.e.data);
     } else {
       fn(eventResized);
     }
@@ -169,7 +184,65 @@ export default class CalendarComponent extends Component {
    * Show the event information
    * @param {*} id
    */
-  showEventInfo(id) {
+  showEventInfo(data) {
+    this.currentEvent = data;
+    this.startDate = data.start;
+    this.endDate = data.end;
+    this.text = htmlSafe(data.text);
     this.isShowingModal = true;
+  }
+
+  /**
+   * Delete current event in the popup
+   */
+  @action
+  delete() {
+    this.isShowingModal = false;
+
+    const response = this.apolloService.deleteEvent({
+      id: this.currentEvent.id,
+    });
+    if (response.status === 'error') {
+      this.error = response.message;
+    } else {
+      this.infos = 'Event successfully deleted.';
+      this.dp.events.list = this.dp.events.list.filter(
+        (elemt) => elemt.id !== this.currentEvent.id
+      );
+      this.dp.update();
+    }
+  }
+
+  /**
+   * Edit Description
+   */
+  @action
+  async editDescription() {
+    // this.isShowingModal = false;
+    const title = prompt('Updated event name:', 'Event');
+    const description = prompt('Updated event description:', 'Description');
+    if (!title && !description) {
+      return;
+    }
+    const text = `<h3>${title}</h3><p>${description}</p>`;
+    this.text = htmlSafe(text);
+    const event = {
+      userId: this.currentEvent.userId,
+      id: this.currentEvent.id,
+      description,
+      title,
+    };
+    const response = await this.apolloService.updateEventDescription(event);
+    if (response.status == 'error') {
+      this.error = response.message;
+    } else {
+      this.infos = 'Event successfully updated.';
+      this.dp.events.list.forEach((element) => {
+        if (element.id === this.currentEvent.id) {
+          element.text = text;
+        }
+      });
+      this.dp.update();
+    }
   }
 }

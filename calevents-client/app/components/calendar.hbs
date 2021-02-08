@@ -3,15 +3,34 @@
 targetAttachment="center"
 translucentOverlay=true
 }}
-Oh hai there!
-<button type="button" {{on "click" this.closeModal}}>Close</button>
+<div>
+  <div>
+
+    <Buttonim @imgSrc="/assets/images/edit.png" @clicked={{this.editDescription}} />
+    <br />
+    {{ this.text }}
+    Start: {{ this.startDate }}<br />
+    End: {{ this.endDate }}<br />
+  </div>
+  <div>
+
+  </div>
+  Delete?
+  <Buttonim @imgSrc="/assets/images/delete.png" @clicked={{this.delete}} />
+  <div align="center">
+    <button type="button" {{on "click" this.closeModal}}>Close</button>
+  </div>
+</div>
+
 {{/modal-dialog}}
 {{/if}}
 
-<div style="padding-top:20px;">Drag and drop on events to update events or drag and drop on
-  an empty space to
-  create one. Click on the X on the top right corner to delete an event. Click on the event to update its title or
-  description<br />
+<div style="padding-top:20px;">Move events by drag and dropping them. Select an empty space and one or multiple users to
+  create an event or overlap if
+  the user are different.<br />
+  One user cannot have two events overlapping them! <br />
+  Click on the event to edit the title and description or to see the (X) on the top right corner to delete an event.
+  <br />
 </div>
 <div class="control" style="padding-bottom:20px;">
   <button style="margin-top:5px;"><img class="refresh-button" src="/assets/images/refresh.png" alt="submit" {{on "click"

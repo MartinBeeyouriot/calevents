@@ -1,0 +1,15 @@
+mutation updateEvent(
+  $userId: Id!
+  $id: Id!
+  $title: String
+  $description: String
+) {
+  updateEvent(
+    userId: $userId
+    id: $id
+    title: $title
+    description: $description
+  ) {
+    id
+  }
+}

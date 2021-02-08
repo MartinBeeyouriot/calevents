@@ -1,11 +1,12 @@
 import Service from '@ember/service';
 import { queryManager } from 'ember-apollo-client';
-import deleteEvent from 'calevents-client/gql/queries/delete-event.graphql';
-import createEvent from 'calevents-client/gql/queries/create-event.graphql';
-import updateEvent from 'calevents-client/gql/queries/update-event.graphql';
-import updateUser from 'calevents-client/gql/queries/update-user.graphql';
-import deleteUser from 'calevents-client/gql/queries/delete-user.graphql';
-import createUser from 'calevents-client/gql/queries/create-user.graphql';
+import deleteEvent from 'calevents-client/gql/mutations/delete-event.graphql';
+import createEvent from 'calevents-client/gql/mutations/create-event.graphql';
+import updateEvent from 'calevents-client/gql/mutations/update-event.graphql';
+import updateEventDescription from 'calevents-client/gql/mutations/update-event-description.graphql';
+import updateUser from 'calevents-client/gql/mutations/update-user.graphql';
+import deleteUser from 'calevents-client/gql/mutations/delete-user.graphql';
+import createUser from 'calevents-client/gql/mutations/create-user.graphql';
 import query from 'calevents-client/gql/queries/users.graphql';
 
 /**
@@ -52,6 +53,23 @@ export default class ApolloService extends Service {
         { mutation: updateEvent, variables },
         'updateEvent'
       );
+      return { status: 'ok', id: response.id };
+    } catch (e) {
+      return this.returnErrorStatus(e);
+    }
+  }
+
+  /**
+   * Update Event Description
+   * @param {*} variables
+   */
+  async updateEventDescription(variables) {
+    try {
+      const response = await this.apollo.mutate(
+        { mutation: updateEventDescription, variables },
+        'updateEventDescription'
+      );
+      if (!response) return { status: 'ok', id: 0 };
       return { status: 'ok', id: response.id };
     } catch (e) {
       return this.returnErrorStatus(e);
