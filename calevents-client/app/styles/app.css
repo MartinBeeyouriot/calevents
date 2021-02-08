@@ -239,7 +239,7 @@ p {
 }
 
 .user:hover {
-  background-color: #f3f3f3;
+  background-color: #e4e3e3 !important;
 }
 
 .user img {
@@ -505,4 +505,8 @@ p {
   position: relative;
   top: 3px !important;
   right: 0px !important;
+}
+
+.article-no-bg {
+  background-color: white !important;
 }
