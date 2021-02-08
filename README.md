@@ -2,9 +2,10 @@
 
 ## Description
 
-This client app is using Emberjs and apollo-ember-absinthe library for graphql.
-The server app is written in Elixir with Phoenix framework and Absinthe library.
-This app allows to create/update/delete users as well as creating events for every users. Events for the same user cannot overlap each other.
+This client app is using **Emberjs** and **apollo-ember-absinthe** library for graphql.
+The server app is written in **Elixir** with Phoenix framework and Absinthe library.
+
+This app allows to create/update/delete users as well as creating events for every users. Events for the same user **cannot overlap** each other.
 
 ## Prerequisites
 
@@ -44,9 +45,9 @@ Alternatively if you have hex/postgres/phoenix installed locally you can also ru
 
 ## Browse
 
-Browse to http://localhost:4000 for the website
-API is available at: http://localhost:4000/api/
-Graphiql enabled at: http://localhost:4000/graphiql/
+* Browse to http://localhost:4000 for the website
+* API is available at: http://localhost:4000/api/
+* Graphiql enabled at: http://localhost:4000/graphiql/
 
 
 ## Screenshots
