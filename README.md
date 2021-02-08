@@ -33,12 +33,14 @@ Alternatively if you have hex/postgres/phoenix installed locally you can also ru
   mix deps.get
   mix compile
 ```
-  The app is expecting PGHOST as the hostname to run into docker and in local. In local PGHOST needs to be exported before to start the server.
-  Postgresql database must be running.
+  The app is expecting PGHOST to be defined as the database hostname to run into docker and in local. In local PGHOST needs to be exported before to start the server.
+  Postgresql database must also be running.
   Database 'calevents_dev' must be created and user postgress needs to exist.
+  ```sh
   pg_ctl -D /usr/local/var/postgres start
   export PGHOST=localhost
-  to get couple of users `mix run priv/repo/seeds.exs `
+  ```
+  To get couple of users run `mix run priv/repo/seeds.exs `
 ```sh
   mix phx.server
 ```
