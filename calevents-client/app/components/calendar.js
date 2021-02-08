@@ -6,6 +6,7 @@ import { inject as service } from '@ember/service';
 export default class CalendarComponent extends Component {
   @tracked isShowingModal = false;
   @tracked infos = '';
+  @tracked error = '';
 
   @service
   planner;
@@ -61,10 +62,12 @@ export default class CalendarComponent extends Component {
       this.checkClick(args, async (eventResized) => {
         const response = await this.apolloService.updateEvent(eventResized);
         if (response.status == 'error') {
-          this.infos = response.message; // display infos
+          this.error = response.message; // display infos
           eventResized.start = args.e.part.start; // revert
           eventResized.end = args.e.part.end;
           this.dp.update();
+        } else {
+          this.infos = 'Event successfully moved.';
         }
       });
     };
@@ -74,10 +77,12 @@ export default class CalendarComponent extends Component {
       this.checkClick(args, async (eventResized) => {
         const response = await this.apolloService.updateEvent(eventResized);
         if (response.status == 'error') {
-          this.infos = response.message; // display infos
+          this.error = response.message; // display infos
           eventResized.start = args.e.part.start; // revert
           eventResized.end = args.e.part.end;
           this.dp.update();
+        } else {
+          this.infos = 'Event successfully resized.';
         }
       });
     };
@@ -90,9 +95,12 @@ export default class CalendarComponent extends Component {
     // delete event
     this.dp.eventDeleteHandling = 'Update';
     this.dp.onEventDeleted = (args) => {
-      this.checkForUser(() =>
-        this.apolloService.deleteEvent({ id: args.e.id() })
-      );
+      const response = this.apolloService.deleteEvent({ id: args.e.id() });
+      if (response.status === 'error') {
+        this.error = response.message;
+      } else {
+        this.infos = 'Event successfully deleted.';
+      }
     };
   }
 
@@ -102,9 +110,9 @@ export default class CalendarComponent extends Component {
    */
   checkForUser(fn) {
     if (!this.planner.hasUserId()) {
-      this.infos = 'Select a user to add events to his calendar.';
+      this.error = 'Select a user to add events to his calendar.';
     } else {
-      this.infos = '';
+      this.error = '';
       fn();
     }
   }
@@ -129,7 +137,17 @@ export default class CalendarComponent extends Component {
         start: new Date(args.start),
         end: new Date(args.end),
       };
-      this.apolloService.createEvent(variables);
+      const response = this.apolloService.createEvent(variables);
+      if (response.status === 'error') {
+        this.error = response.message;
+      } else {
+        this.infos = 'Successfully created event(s).';
+        this.dp.events.list.pushObject(
+          this.planner.setNewEvent(response.id, variables)
+        );
+        console.log(this.dp.events.list);
+        this.dp.update(); // refresh the calendar
+      }
     }
   }
 

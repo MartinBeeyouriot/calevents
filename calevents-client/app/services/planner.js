@@ -86,6 +86,15 @@ export default class PlannerService extends Service {
     this.events.clear();
   }
 
+  setNewEvent(id, event) {
+    event.id = id; // set the event id
+    event.text = `<h3>${event.title}</h3><p>${event.description}</p>`;
+    event.start = convertUTCDateToLocalDate(event.start);
+    event.end = convertUTCDateToLocalDate(event.end);
+    // this.events.pushObject(event); // add directly into the calendar
+    return event;
+  }
+
   /**
    * Update Events from data receive from call graphql users
    * @param {*} data

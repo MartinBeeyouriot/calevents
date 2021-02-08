@@ -16,6 +16,7 @@ Oh hai there!
 <div class="control" style="padding-bottom:20px;">
   <button style="margin-top:5px;"><img class="refresh-button" src="/assets/images/refresh.png" alt="submit" {{on "click"
       this.refresh }} /></button>
-  <span style="color:darkred; padding-left:10px;">{{ this.infos }}</span>
+  <span style="color:darkred; padding-left:10px;">{{ this.error }}</span>
+  <span style="color:darkgreen; padding-left:10px;">{{ this.infos }}</span>
 </div>
 <div {{did-insert this.registerListener}} {{will-destroy this.unregisterListener}}>Test</div>
