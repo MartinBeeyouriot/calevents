@@ -28,6 +28,13 @@ docker-compose up
 ```
   mix deps.get
   mix compile
+```
+  The app is expecting PGHOST as the hostname to run into docker and in local. In local PGHOST needs to be exported before to start the server.
+  Database must be running.
+  Database 'calevents_dev' must be created and user postgress needs to exist.
+  pg_ctl -D /usr/local/var/postgres start
+  export PGHOST=localhost
+```
   mix phx.server
 ```
 

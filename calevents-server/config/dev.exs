@@ -5,8 +5,8 @@ config :calevents, Calevents.Repo,
   username: "postgres",
   password: "postgres",
   database: "calevents_dev",
-  # System.get_env("PGHOST"), for docker
-  hostname: "localhost",
+  # Docker requirement
+  hostname: System.get_env("PGHOST"),
   show_sensitive_data_on_connection_error: true,
   pool_size: 10
 
