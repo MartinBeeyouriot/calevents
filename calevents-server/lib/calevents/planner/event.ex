@@ -16,6 +16,7 @@ defmodule Calevents.Planner.Event do
   def changeset(event, attrs) do
     event
     |> cast(attrs, [:title, :description, :start, :end, :user_id])
+    |> foreign_key_constraint(:user_id, name: :uvents_user_id_fkey)
     |> validate_required([:title, :description, :start, :end, :user_id])
   end
 end
