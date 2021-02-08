@@ -105,6 +105,5 @@ export default class PlannerService extends Service {
         this.addEvent(newEvent);
       }
     }
-    console.log(this.events);
   }
 }

@@ -8,7 +8,6 @@ export default class EventsController extends Controller {
 
   constructor() {
     super(...arguments);
-    console.log(this.model);
   }
 
   /**
@@ -25,7 +24,7 @@ export default class EventsController extends Controller {
       };
       await this.apolloService.createUser(user);
       // TODO ugly refresh the model
-      location.reload();
+      // location.reload();
     }
   }
 }

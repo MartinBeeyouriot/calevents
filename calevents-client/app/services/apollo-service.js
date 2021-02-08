@@ -16,15 +16,28 @@ export default class ApolloService extends Service {
   apollo;
 
   /**
+   * Build an error status with proper message.
+   * @param {*} e
+   */
+  returnErrorStatus(e) {
+    const message = e.errors.map((item) => item.message).join(',');
+    return { status: 'error', message };
+  }
+
+  /**
    * Delete Event
    * @param {*} variables
    */
   async deleteEvent(variables) {
-    const response = await this.apollo.mutate(
-      { mutation: deleteEvent, variables },
-      'deleteEvent'
-    );
-    console.log(response);
+    try {
+      const response = await this.apollo.mutate(
+        { mutation: deleteEvent, variables },
+        'deleteEvent'
+      );
+      return { status: 'ok', id: response.id };
+    } catch (e) {
+      return this.returnErrorStatus(e);
+    }
   }
 
   /**
@@ -32,15 +45,17 @@ export default class ApolloService extends Service {
    * @param {*} variables
    */
   async updateEvent(variables) {
-    console.log('update event');
     variables.start = new Date(variables.start);
     variables.end = new Date(variables.end);
-    console.log(variables);
-    const response = await this.apollo.mutate(
-      { mutation: updateEvent, variables },
-      'updateEvent'
-    );
-    console.log(response);
+    try {
+      const response = await this.apollo.mutate(
+        { mutation: updateEvent, variables },
+        'updateEvent'
+      );
+      return { status: 'ok', id: response.id };
+    } catch (e) {
+      return this.returnErrorStatus(e);
+    }
   }
 
   /**
@@ -48,11 +63,15 @@ export default class ApolloService extends Service {
    * @param {*} variables
    */
   async createEvent(variables) {
-    const response = await this.apollo.mutate(
-      { mutation: createEvent, variables },
-      'createEvent'
-    );
-    console.log(response);
+    try {
+      const response = await this.apollo.mutate(
+        { mutation: createEvent, variables },
+        'createEvent'
+      );
+      return { status: 'ok', id: response.id };
+    } catch (e) {
+      return this.returnErrorStatus(e);
+    }
   }
 
   /**
@@ -67,12 +86,15 @@ export default class ApolloService extends Service {
    * @param {*} variables
    */
   async updateUser(variables) {
-    console.log(variables);
-    const response = await this.apollo.mutate(
-      { mutation: updateUser, variables },
-      'updateUser'
-    );
-    console.log(response);
+    try {
+      const response = await this.apollo.mutate(
+        { mutation: updateUser, variables },
+        'updateUser'
+      );
+      return { status: 'ok', id: response.id };
+    } catch (e) {
+      return this.returnErrorStatus(e);
+    }
   }
 
   /**
@@ -80,11 +102,15 @@ export default class ApolloService extends Service {
    * @param {*} variables
    */
   async deleteUser(id) {
-    const response = await this.apollo.mutate(
-      { mutation: deleteUser, variables: { id } },
-      'deleteUser'
-    );
-    console.log(response);
+    try {
+      const response = await this.apollo.mutate(
+        { mutation: deleteUser, variables: { id } },
+        'deleteUser'
+      );
+      return { status: 'ok', id: response.id };
+    } catch (e) {
+      return this.returnErrorStatus(e);
+    }
   }
 
   /**
@@ -92,10 +118,14 @@ export default class ApolloService extends Service {
    * @param {*} user
    */
   async createUser(user) {
-    const response = await this.apollo.mutate(
-      { mutation: createUser, variables: user },
-      'createUser'
-    );
-    console.log(response);
+    try {
+      const response = await this.apollo.mutate(
+        { mutation: createUser, variables: user },
+        'createUser'
+      );
+      return { status: 'ok', id: response.id };
+    } catch (e) {
+      return this.returnErrorStatus(e);
+    }
   }
 }

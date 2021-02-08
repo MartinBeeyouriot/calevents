@@ -2,6 +2,7 @@ import Component from '@glimmer/component';
 import { action } from '@ember/object';
 import { tracked } from '@glimmer/tracking';
 import { inject as service } from '@ember/service';
+import { htmlSafe } from '@ember/template';
 
 export default class CalendarComponent extends Component {
   @service
@@ -24,7 +25,7 @@ export default class CalendarComponent extends Component {
     super(...arguments);
     this.user = { ...this.args.user };
     this.name = this.user.name;
-    this.color = this.user.color;
+    this.color = htmlSafe(`background-color: ${this.user.color}`);
     this.nbEvents = this.user.events.length;
   }
 
@@ -65,7 +66,7 @@ export default class CalendarComponent extends Component {
     const color = prompt('New color:', this.user.color);
     if (color) {
       this.user.color = color;
-      this.color = color;
+      this.color = htmlSafe(`background-color: ${this.user.color}`);
       await this.apolloService.updateUser(this.user);
     }
   }

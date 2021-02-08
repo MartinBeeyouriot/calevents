@@ -1,4 +1,4 @@
-<div class="user {{this.selectedClassname}}" style="background-color: {{@user.color}}" {{ on "click" this.selected}}>
+<div class="user {{this.selectedClassname}}" style={{this.color}} {{ on "click" this.selected}}>
 
   <h3>{{this.name}}
     <Buttonim @imgSrc="/assets/images/edit.png" @clicked={{this.updateName}} />
@@ -8,7 +8,7 @@
     {{!--
     <Buttonim @imgSrc="/assets/images/edit.png" @clicked={{this.updateAge}} /> --}}
     <span style="display:inline; padding-left: 30px;">Total events in their calendar:</span> {{this.nbEvents}}
-    <span style="background-color:{{this.color}}" class="calendar-color">Calendar
+    <span style={{this.color}} class="calendar-color">Calendar
       color
       <Buttonim @imgSrc="/assets/images/edit.png" @clicked={{this.updateColor}} />
     </span>

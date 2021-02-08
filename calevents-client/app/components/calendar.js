@@ -58,16 +58,28 @@ export default class CalendarComponent extends Component {
 
     // add event listener when moving the event
     this.dp.onEventMoved = (args) => {
-      this.checkClick(args, (eventResized) =>
-        this.apolloService.updateEvent(eventResized)
-      );
+      this.checkClick(args, async (eventResized) => {
+        const response = await this.apolloService.updateEvent(eventResized);
+        if (response.status == 'error') {
+          this.infos = response.message; // display infos
+          eventResized.start = args.e.part.start; // revert
+          eventResized.end = args.e.part.end;
+          this.dp.update();
+        }
+      });
     };
 
     // when event duration is changed
     this.dp.onEventResized = (args) => {
-      this.checkClick(args, (eventResized) =>
-        this.apolloService.updateEvent(eventResized)
-      );
+      this.checkClick(args, async (eventResized) => {
+        const response = await this.apolloService.updateEvent(eventResized);
+        if (response.status == 'error') {
+          this.infos = response.message; // display infos
+          eventResized.start = args.e.part.start; // revert
+          eventResized.end = args.e.part.end;
+          this.dp.update();
+        }
+      });
     };
 
     // empty range selected
