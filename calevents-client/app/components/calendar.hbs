@@ -1,0 +1,18 @@
+{{#if isShowingModal}}
+{{#modal-dialog
+targetAttachment="center"
+translucentOverlay=true
+}}
+Oh hai there!
+<button type="button" {{on "click" this.closeModal}}>Close</button>
+{{/modal-dialog}}
+{{/if}}
+
+<div style="padding-top:20px; padding-bottom:20px;">Drag and drop on events to update events or drag and drop on
+  an empty space to
+  create one. Click on the X on the top right corner to delete an event. Click on the event to update its title or
+  description<br />
+  <button style="margin-top:5px;"><img class="refresh-button" src="/assets/images/refresh.png" alt="submit" {{on "click"
+      this.refresh }} /></button>
+</div>
+<div {{did-insert this.registerListener}} {{will-destroy this.unregisterListener}}>Test</div>

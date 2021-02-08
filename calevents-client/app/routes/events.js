@@ -7,7 +7,7 @@ export default Route.extend({
   apollo: queryManager(),
 
   model(params) {
-    let variables = { id: params.id };
+    const variables = { id: params.id };
     return this.apollo.watchQuery({ query, variables }, 'users');
   },
 });

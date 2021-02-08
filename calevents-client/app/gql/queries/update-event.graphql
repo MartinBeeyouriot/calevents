@@ -1,0 +1,19 @@
+mutation updateEvent(
+  $userId: UserId!
+  $id: Id!
+  $title: Title
+  $description: Description
+  $start: StartDate
+  $end: EndDate
+) {
+  updateEvent(
+    userId: $userId
+    id: $id
+    title: $title
+    description: $description
+    start: $start
+    end: $end
+  ) {
+    id
+  }
+}
