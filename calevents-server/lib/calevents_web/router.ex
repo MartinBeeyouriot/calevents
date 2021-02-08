@@ -2,6 +2,7 @@ defmodule CaleventsWeb.Router do
   use CaleventsWeb, :router
 
   pipeline :api do
+    # Defining Cors origin
     plug CORSPlug, origin: "http://localhost:4200"
     plug :accepts, ["json"]
   end
@@ -9,8 +10,10 @@ defmodule CaleventsWeb.Router do
   scope "/" do
     pipe_through :api
 
+    # Api
     forward "/api", Absinthe.Plug, schema: CaleventsWeb.Schema.Schema
 
+    # Graphiql
     forward "/graphiql", Absinthe.Plug.GraphiQL,
       schema: CaleventsWeb.Schema.Schema,
       interface: :simple

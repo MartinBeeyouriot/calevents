@@ -1,35 +1,44 @@
 defmodule CaleventsWeb.Schema.Schema do
+  @moduledoc """
+  GraphQL Schema for users and events.
+  """
   use Absinthe.Schema
 
   import_types(Absinthe.Type.Custom)
 
+  @doc """
+    Defines queries, arguments available, which will then all resolve
+  """
   query do
-    @desc "Get a list of users"
+    @desc "Get a list of users and associated events (if specified)"
     field :users, list_of(:user) do
       resolve(&CaleventsWeb.Resolvers.Accounts.users/3)
     end
 
-    @desc "Get a user by its id"
+    @desc "Get a user by its id."
     field :user, :user do
       arg(:id, non_null(:id))
       resolve(&CaleventsWeb.Resolvers.Accounts.user/3)
     end
 
-    @desc "Get an event by its id"
+    @desc "Get an event by its id."
     field :event, :event do
       arg(:id, non_null(:id))
       resolve(&CaleventsWeb.Resolvers.Planner.event/3)
     end
 
-    @desc "Get an event by its (optional) user_id"
+    @desc "Get an event by its (optional) user_id. If no user_id specified returns all events."
     field :events, list_of(:event) do
       arg(:user_id, :id)
       resolve(&CaleventsWeb.Resolvers.Planner.events/3)
     end
   end
 
+  #
+  # Mutation available for our schema of users and events
+  #
   mutation do
-    @desc "Create a new User"
+    @desc "Create a new User."
     field :create_user, :user do
       arg(:name, non_null(:string))
       arg(:color, non_null(:string))
@@ -37,7 +46,7 @@ defmodule CaleventsWeb.Schema.Schema do
       resolve(&CaleventsWeb.Resolvers.Accounts.create_user/3)
     end
 
-    @desc "Update a User"
+    @desc "Update a User."
     field :update_user, :user do
       arg(:id, non_null(:id))
       arg(:age, :integer)
@@ -47,14 +56,14 @@ defmodule CaleventsWeb.Schema.Schema do
       resolve(&CaleventsWeb.Resolvers.Accounts.update_user/3)
     end
 
-    @desc "Delete a User"
+    @desc "Delete a User."
     field :delete_user, :user do
       arg(:id, non_null(:id))
 
       resolve(&CaleventsWeb.Resolvers.Accounts.delete_user/3)
     end
 
-    @desc "Create a new Event"
+    @desc "Create a new Event."
     field :create_event, :event do
       arg(:start, non_null(:datetime))
       arg(:end, non_null(:datetime))
@@ -65,14 +74,14 @@ defmodule CaleventsWeb.Schema.Schema do
       resolve(&CaleventsWeb.Resolvers.Planner.create_event/3)
     end
 
-    @desc "Delete an Event"
+    @desc "Delete an Event."
     field :delete_event, :event do
       arg(:id, non_null(:id))
 
       resolve(&CaleventsWeb.Resolvers.Planner.delete_event/3)
     end
 
-    @desc "Update an Event"
+    @desc "Update an Event."
     field :update_event, :event do
       arg(:id, non_null(:id))
       arg(:user_id, non_null(:id))
@@ -85,7 +94,9 @@ defmodule CaleventsWeb.Schema.Schema do
     end
   end
 
-  # User Object with some fields
+  #
+  # User Object with its fields
+  #
   object :user do
     field :id, non_null(:id)
     field :name, non_null(:string)
@@ -97,7 +108,9 @@ defmodule CaleventsWeb.Schema.Schema do
     end
   end
 
-  # Event Object
+  #
+  # Event Object with its fields
+  #
   object :event do
     field :id, non_null(:id)
     field :start, non_null(:datetime)

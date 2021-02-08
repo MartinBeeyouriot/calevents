@@ -36,6 +36,11 @@ defmodule Calevents.Planner do
 
   """
   def get_event!(id), do: Repo.get!(Event, id)
+
+  @doc """
+    Same as get_event
+    Doesn't need to raise an error.
+  """
   def get_event(id), do: Repo.get(Event, id)
 
   @doc """

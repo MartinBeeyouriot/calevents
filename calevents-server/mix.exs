@@ -43,6 +43,7 @@ defmodule Calevents.MixProject do
       {:gettext, "~> 0.11"},
       {:jason, "~> 1.0"},
       {:plug_cowboy, "~> 2.0"},
+      # Added for grqphql, absinthe_phoenix includes deps to absinthe and absinthe_plug
       {:absinthe_phoenix, "~> 2.0.0"},
       {:cors_plug, "~> 1.5"}
     ]

@@ -1,14 +1,26 @@
 defmodule CaleventsWeb.Resolvers.Accounts do
+  @moduledoc """
+  Accounts Resolvers
+  """
   alias Calevents.Accounts
 
+  @doc """
+    Get the list of users
+  """
   def users(_, _, _) do
     {:ok, Accounts.list_users()}
   end
 
+  @doc """
+    Get a specific user with its id
+  """
   def user(_, %{id: id}, _) do
     {:ok, Accounts.get_user!(id)}
   end
 
+  @doc """
+    Create a new user with %{} args
+  """
   def create_user(_root, args, _info) do
     # set default age value
     age = :rand.uniform(85)
@@ -19,10 +31,13 @@ defmodule CaleventsWeb.Resolvers.Accounts do
         {:ok, user}
 
       _error ->
-        {:error, "could not create user"}
+        {:error, "Could not create user. (server error)"}
     end
   end
 
+  @doc """
+    Delete a user with its id
+  """
   def delete_user(_root, %{id: id}, _info) do
     user = Accounts.get_user!(id)
 
@@ -31,10 +46,13 @@ defmodule CaleventsWeb.Resolvers.Accounts do
         {:ok, user}
 
       _error ->
-        {:error, "could not delete user"}
+        {:error, "Could not delete user. (userId not found)"}
     end
   end
 
+  @doc """
+    Update a user with the args provided
+  """
   def update_user(_root, args, _info) do
     %{id: id} = args
     user = Accounts.get_user!(id)
@@ -44,7 +62,7 @@ defmodule CaleventsWeb.Resolvers.Accounts do
         {:ok, user}
 
       _error ->
-        {:error, "could not delete user"}
+        {:error, "Could not delete user. (userId not found)"}
     end
   end
 end

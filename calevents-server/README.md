@@ -17,3 +17,24 @@ Ready to run in production? Please [check our deployment guides](https://hexdocs
   * Docs: https://hexdocs.pm/phoenix
   * Forum: https://elixirforum.com/c/phoenix-forum
   * Source: https://github.com/phoenixframework/phoenix
+
+## Run docker
+```sh
+docker-compose build
+docker-compose up
+```
+
+## Run phoenix
+```
+  mix deps.get
+  mix compile
+  mix phx.server
+```
+
+## Infos
+
+API is available at: http://localhost:4000/api/
+Graphiql enabled at: http://localhost:4000/graphiql/
+CORS enable for http://localhost:4200/
+
+Queries available in gql-queries.graphql

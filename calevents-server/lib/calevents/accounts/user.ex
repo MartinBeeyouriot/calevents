@@ -1,4 +1,7 @@
 defmodule Calevents.Accounts.User do
+  @moduledoc """
+  Auto generate.
+  """
   use Ecto.Schema
   import Ecto.Changeset
   alias Calevents.Planner.Event

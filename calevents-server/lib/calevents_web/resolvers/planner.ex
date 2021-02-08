@@ -33,13 +33,13 @@ defmodule CaleventsWeb.Resolvers.Planner do
           {:ok, event}
 
         {:error, _changeset} ->
-          {:error, "could not find user_id"}
+          {:error, "Could not create event. (userId not found)"}
 
         _error ->
-          {:error, "could not create event"}
+          {:error, "Could not create event. (server error)"}
       end
     else
-      {:error, "could not create event, overlapping"}
+      {:error, "Could not create event. (Overlapping with existing events)"}
     end
   end
 
@@ -56,8 +56,6 @@ defmodule CaleventsWeb.Resolvers.Planner do
     # Retrieve all the element for our user. We can add filter later to limit it
     # to one day only, to limit events size.
     events = Planner.get_by(user_id)
-
-    IO.puts("doing the date check ...")
 
     case events do
       # no events found so planning is possible
@@ -96,14 +94,13 @@ defmodule CaleventsWeb.Resolvers.Planner do
         # look into the list to see if there is any false member which means
         # that this event is overlapping
         is_not_overlapping = not (results |> Enum.member?(false))
-
         # IO.puts("Is possible: #{is_possible} #{is_not_overlapping}")
 
         is_possible and is_not_overlapping
     end
   end
 
-  # Private function to compare the date
+  # Private set of functions to compare dates
   defp compare_date(a, :<, b), do: DateTime.compare(a, b) == :lt
   defp compare_date(a, :<=, b), do: DateTime.compare(a, b) != :gt
   defp compare_date(a, :>, b), do: DateTime.compare(a, b) == :gt
@@ -115,7 +112,7 @@ defmodule CaleventsWeb.Resolvers.Planner do
   def delete_event(_root, %{id: id}, _info) do
     case Planner.get_event(id) do
       nil ->
-        {:error, "could not find event"}
+        {:error, "Could not find event. (Event id not found)"}
 
       event ->
         case Planner.delete_event(event) do
@@ -123,7 +120,7 @@ defmodule CaleventsWeb.Resolvers.Planner do
             {:ok, event}
 
           _error ->
-            {:error, "could not delete event"}
+            {:error, "Could not delete event. (Server error)"}
         end
     end
   end
@@ -153,21 +150,21 @@ defmodule CaleventsWeb.Resolvers.Planner do
           {:ok, event}
 
         {:error, _changeset} ->
-          {:error, "could not find user_id"}
+          {:error, "Could not update event. (userId not found)"}
       end
     else
-      {:error, "could not create event, overlapping"}
+      {:error, "Could not update event. (Overlapping with existing events)"}
     end
   end
 
-  # This is in any other case with just an id.
+  # This is in any other case with just an event id.
   defp update_event_private(event, args) do
     case Planner.update_event(event, args) do
       {:ok, event} ->
         {:ok, event}
 
       _error ->
-        {:error, "could not update event"}
+        {:error, "Could not update event. (server error)"}
     end
   end
 end
