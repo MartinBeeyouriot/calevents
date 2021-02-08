@@ -5,6 +5,7 @@ import { inject as service } from '@ember/service';
 
 export default class CalendarComponent extends Component {
   @tracked isShowingModal = false;
+  @tracked infos = '';
 
   @service
   planner;
@@ -56,27 +57,42 @@ export default class CalendarComponent extends Component {
     // add event listener when moving the event
     this.dp.onEventMoved = (args) => {
       this.checkClick(args, (eventResized) => {
-        this.apolloService.updateEvents(eventResized); // TODO
+        this.checkForUser(() => this.apolloService.updateEvents(eventResized)); // TODO
       });
     };
 
     // when event duration is changed
     this.dp.onEventResized = function (args) {
       this.checkClick(args, (eventResized) => {
-        this.apolloService.updateEvents(eventResized); // TODO
+        this.checkForUser(() => this.apolloService.updateEvents(eventResized)); // TODO
       });
     };
 
     // empty range selected
     this.dp.onTimeRangeSelected = (args) => {
-      this.createEvent(args);
+      this.checkForUser(() => this.createEvent(args));
     };
 
     // delete event
     this.dp.eventDeleteHandling = 'Update';
     this.dp.onEventDeleted = (args) => {
-      this.apolloService.deleteEvent({ id: args.e.id() });
+      this.checkForUser(() =>
+        this.apolloService.deleteEvent({ id: args.e.id() })
+      );
     };
+  }
+
+  /**
+   * Check for a defined user.
+   * @param {*} fn
+   */
+  checkForUser(fn) {
+    if (this.planner.userId < 1) {
+      this.infos = 'Select a user to add events to his calendar.';
+    } else {
+      this.infos = '';
+      fn();
+    }
   }
 
   /**
@@ -117,5 +133,13 @@ export default class CalendarComponent extends Component {
     } else {
       fn(eventResized);
     }
+  }
+
+  /**
+   * Show the event information
+   * @param {*} id
+   */
+  showEventInfo(id) {
+    this.isShowingModal = true;
   }
 }

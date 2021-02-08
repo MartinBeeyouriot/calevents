@@ -8,11 +8,14 @@ Oh hai there!
 {{/modal-dialog}}
 {{/if}}
 
-<div style="padding-top:20px; padding-bottom:20px;">Drag and drop on events to update events or drag and drop on
+<div style="padding-top:20px;">Drag and drop on events to update events or drag and drop on
   an empty space to
   create one. Click on the X on the top right corner to delete an event. Click on the event to update its title or
   description<br />
+</div>
+<div class="control" style="padding-bottom:20px;">
   <button style="margin-top:5px;"><img class="refresh-button" src="/assets/images/refresh.png" alt="submit" {{on "click"
       this.refresh }} /></button>
+  <span style="color:darkred; padding-left:10px;">{{ this.infos }}</span>
 </div>
 <div {{did-insert this.registerListener}} {{will-destroy this.unregisterListener}}>Test</div>

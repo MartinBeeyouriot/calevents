@@ -2,8 +2,19 @@
   <!--
   <img src={{item.image}} alt="">
   -->
-  <h3>{{@user.name}}</h3>
+  <h3>{{@user.name}}
+    <Buttonim @imgSrc="/assets/images/edit.png" />
+  </h3>
   <div class="detail owner">
-    <span>Age:</span> {{@user.age}}
+    <span style="display:inline;">Age:</span> {{@user.age}}
+    <Buttonim @imgSrc="/assets/images/edit.png" />
+    <span style="display:inline; padding-left: 30px;">Total events in their calendar:</span> {{@user.events.length}}
+    <span style="background-color:{{@user.color}}" class="calendar-color">Calendar
+      color
+      <Buttonim @imgSrc="/assets/images/edit.png" />
+    </span>
+  </div>
+  <div class="action">
+    <Buttonim @imgSrc="/assets/images/delete.png" />
   </div>
 </article>

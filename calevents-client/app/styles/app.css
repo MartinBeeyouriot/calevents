@@ -226,6 +226,7 @@ p {
  */
 
 .user {
+  cursor: pointer;
   margin-top: 15px;
   background-color: #f6f6f6;
   border-radius: 2px;
@@ -474,11 +475,34 @@ p {
   border: 0;
 }
 
+.calendar-color {
+  display: inline;
+  margin-left: 30px;
+  padding: 10px 10px 10px 10px;
+  width: 50px;
+}
+
 .refresh-button {
   height: 20px !important;
   width: 20px !important;
   padding: 5px 20px 2px 20px;
   position: relative;
   top: 0px !important;
+  right: 0px !important;
+}
+
+.my-button {
+  cursor: pointer;
+  border: none !important;
+  background-color: unset;
+}
+
+.my-button-image {
+  cursor: pointer;
+  height: 20px !important;
+  width: 20px !important;
+  padding: 0px 5px 0px 5px;
+  position: relative;
+  top: 3px !important;
   right: 0px !important;
 }
