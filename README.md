@@ -42,6 +42,12 @@ Alternatively if you have hex/postgres/phoenix installed locally you can also ru
   mix phx.server
 ```
 
+## Browse
+
+Browse to http://localhost:4000 for the website
+API is available at: http://localhost:4000/api/
+Graphiql enabled at: http://localhost:4000/graphiql/
+
 
 ## Screenshots
 ![alt text](https://github.com/MartinBeeyouriot/calevents/blob/master/screenshots/1.png?raw=true)
