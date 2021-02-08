@@ -56,7 +56,7 @@ export default class CalendarComponent extends Component {
     // eslint-disable-next-line no-undef
     this.dp = new DayPilot.Calendar(element);
     this.dp.viewType = 'Week';
-    this.dp.startDate = '2021-02-06';
+    this.dp.startDate = '2021-02-09';
     this.dp.init();
 
     // set the events
