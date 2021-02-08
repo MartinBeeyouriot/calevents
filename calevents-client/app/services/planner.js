@@ -1,6 +1,6 @@
 import Service from '@ember/service';
 import { A } from '@ember/array';
-
+import { convertUTCDateToLocalDate } from '../utils/date';
 /**
  * Emberjs planner service
  */
@@ -8,24 +8,40 @@ export default class PlannerService extends Service {
   /**
    * User Id selected to create event.
    */
-  userId = -1;
+  userIds = A([]);
   /**
    * List of Events
    */
   events = A([]);
 
   /**
-   * Get the userId
+   * Add a new userId
+   * @param {*} userId
    */
-  get userId() {
-    return this.userId;
+  addUserId(userId) {
+    const result = this.userIds.find((x) => x === userId);
+    if (!result) this.userIds.push(userId);
   }
 
   /**
-   * The set userId
+   * Remove a userId
    */
-  set userId(userId) {
-    this.userId = userId;
+  removeUserId(userId) {
+    this.userIds.removeObject(userId);
+  }
+
+  /**
+   * Has any user defined
+   */
+  hasUserId() {
+    return this.userIds.length !== 0;
+  }
+
+  /**
+   * Get User Ids
+   */
+  get userIds() {
+    return this.userIds;
   }
 
   /**
@@ -33,6 +49,10 @@ export default class PlannerService extends Service {
    */
   get events() {
     return this.events;
+  }
+
+  get data() {
+    return this.data;
   }
 
   /**
@@ -78,10 +98,9 @@ export default class PlannerService extends Service {
           backColor: user.color,
         };
         newEvent.id = event.id;
-        console.log(event.start);
-        console.log(event.end);
-        newEvent.start = event.start;
-        newEvent.end = event.end;
+        newEvent.userId = user.id;
+        newEvent.start = convertUTCDateToLocalDate(event.start);
+        newEvent.end = convertUTCDateToLocalDate(event.end);
         newEvent.text = `<h3>${event.title}</h3><p>${event.description}</p>`;
         this.addEvent(newEvent);
       }

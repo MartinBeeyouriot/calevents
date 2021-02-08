@@ -36,10 +36,12 @@ export default class CalendarComponent extends Component {
 
   @action
   async refresh() {
-    const data = await this.apolloService.fetchAll();
+    /*const data = await this.apolloService.fetchAll();
+    console.log('refresh!');
+    console.log(data);
     this.planner.updateEvents(data);
-    this.dp.events.list = this.planner.events;
-    this.dp.update();
+    this.dp.events.list = [...this.planner.events];
+    this.dp.update();*/
   }
 
   setupCalendar(element) {
@@ -51,21 +53,21 @@ export default class CalendarComponent extends Component {
     this.dp.init();
 
     // set the events
-    this.dp.events.list = this.planner.events;
+    this.dp.events.list = [...this.planner.events];
     this.dp.update();
 
     // add event listener when moving the event
     this.dp.onEventMoved = (args) => {
-      this.checkClick(args, (eventResized) => {
-        this.checkForUser(() => this.apolloService.updateEvents(eventResized)); // TODO
-      });
+      this.checkClick(args, (eventResized) =>
+        this.apolloService.updateEvent(eventResized)
+      );
     };
 
     // when event duration is changed
-    this.dp.onEventResized = function (args) {
-      this.checkClick(args, (eventResized) => {
-        this.checkForUser(() => this.apolloService.updateEvents(eventResized)); // TODO
-      });
+    this.dp.onEventResized = (args) => {
+      this.checkClick(args, (eventResized) =>
+        this.apolloService.updateEvent(eventResized)
+      );
     };
 
     // empty range selected
@@ -87,7 +89,7 @@ export default class CalendarComponent extends Component {
    * @param {*} fn
    */
   checkForUser(fn) {
-    if (this.planner.userId < 1) {
+    if (!this.planner.hasUserId()) {
       this.infos = 'Select a user to add events to his calendar.';
     } else {
       this.infos = '';
@@ -102,20 +104,21 @@ export default class CalendarComponent extends Component {
   createEvent(args) {
     const title = prompt('New event name:', 'Event');
     const description = prompt('New event description:', 'Description');
-    const variables = {
-      userId: this.planner.userId,
-      title,
-      description,
-      start: new Date(args.start),
-      end: new Date(args.end),
-    };
-
-    this.dp.clearSelection();
     if (!name && !description) {
       return;
     }
+    this.dp.clearSelection();
 
-    this.apolloService.createEvent(variables);
+    for (const userId of this.planner.userIds) {
+      const variables = {
+        userId: userId,
+        title,
+        description,
+        start: new Date(args.start),
+        end: new Date(args.end),
+      };
+      this.apolloService.createEvent(variables);
+    }
   }
 
   /**
@@ -125,10 +128,7 @@ export default class CalendarComponent extends Component {
    */
   checkClick(args, fn) {
     const eventResized = this.planner.getEvent(args.e.data.id);
-    if (
-      eventResized.start === args.newStart &&
-      eventResized.end === args.newEnd
-    ) {
+    if (args.e.start === args.newStart && args.e.end === args.newEnd) {
       this.showEventInfo(args.e.data.id);
     } else {
       fn(eventResized);

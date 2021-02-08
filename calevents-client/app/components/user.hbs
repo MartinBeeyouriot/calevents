@@ -1,20 +1,20 @@
-<article class="user">
-  <!--
-  <img src={{item.image}} alt="">
-  -->
-  <h3>{{@user.name}}
-    <Buttonim @imgSrc="/assets/images/edit.png" />
+<div class="user {{this.selectedClassname}}" style="background-color: {{@user.color}}" {{ on "click" this.selected}}>
+
+  <h3>{{this.name}}
+    <Buttonim @imgSrc="/assets/images/edit.png" @clicked={{this.updateName}} />
   </h3>
   <div class="detail owner">
-    <span style="display:inline;">Age:</span> {{@user.age}}
-    <Buttonim @imgSrc="/assets/images/edit.png" />
-    <span style="display:inline; padding-left: 30px;">Total events in their calendar:</span> {{@user.events.length}}
-    <span style="background-color:{{@user.color}}" class="calendar-color">Calendar
+    <span style="display:inline;">Age:</span> {{this.user.age}}
+    {{!--
+    <Buttonim @imgSrc="/assets/images/edit.png" @clicked={{this.updateAge}} /> --}}
+    <span style="display:inline; padding-left: 30px;">Total events in their calendar:</span> {{this.nbEvents}}
+    <span style="background-color:{{this.color}}" class="calendar-color">Calendar
       color
-      <Buttonim @imgSrc="/assets/images/edit.png" />
+      <Buttonim @imgSrc="/assets/images/edit.png" @clicked={{this.updateColor}} />
     </span>
   </div>
   <div class="action">
-    <Buttonim @imgSrc="/assets/images/delete.png" />
+    <Buttonim @imgSrc="/assets/images/select.png" @clicked={{this.selected}} @text="{{this.selectButton}}" />
+    <Buttonim @imgSrc="/assets/images/delete.png" @clicked={{this.delete}} />
   </div>
-</article>
+</div>
