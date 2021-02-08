@@ -1,4 +1,4 @@
-mutation deleteEvent($id: EventId!) {
+mutation deleteEvent($id: Id!) {
   deleteEvent(id: $id) {
     id
   }

@@ -1,0 +1,5 @@
+mutation createUser($name: String, $color: String) {
+  createUser(color: $color, name: $name) {
+    id
+  }
+}

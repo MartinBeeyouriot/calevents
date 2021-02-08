@@ -1,10 +1,10 @@
 mutation updateEvent(
-  $userId: UserId!
+  $userId: Id!
   $id: Id!
-  $title: Title
-  $description: Description
-  $start: StartDate
-  $end: EndDate
+  $title: String
+  $description: String
+  $start: StartDate!
+  $end: EndDate!
 ) {
   updateEvent(
     userId: $userId

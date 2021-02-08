@@ -1,7 +1,7 @@
 mutation createEvent(
-  $userId: UserId!
-  $title: Title!
-  $description: Description!
+  $userId: Id!
+  $title: String!
+  $description: String!
   $start: StartDate!
   $end: EndDate!
 ) {
