@@ -12,7 +12,7 @@ defmodule CaleventsWeb.Resolvers.Planner do
   @doc """
     This query is used to get events from user for the user/event query.
   """
-  def events_by_user(root, _args, info) do
+  def events_by_user(root, _args, _info) do
     {:ok, Planner.get_by(root.id)}
   end
 
