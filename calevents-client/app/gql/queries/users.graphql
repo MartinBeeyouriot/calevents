@@ -1,0 +1,26 @@
+# Simple query
+# query {
+#   users {
+#     id
+#     name
+#     age
+#     color
+#   }
+# }
+
+# Our query has now all the event details for the users
+query {
+  users {
+    id
+    name
+    age
+    color
+    events {
+      id
+      title
+      description
+      start
+      end
+    }
+  }
+}

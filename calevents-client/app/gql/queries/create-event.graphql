@@ -1,0 +1,17 @@
+mutation createEvent(
+  $userId: UserId!
+  $title: Title!
+  $description: Description!
+  $start: StartDate!
+  $end: EndDate!
+) {
+  createEvent(
+    userId: $userId
+    title: $title
+    description: $description
+    start: $start
+    end: $end
+  ) {
+    id
+  }
+}
